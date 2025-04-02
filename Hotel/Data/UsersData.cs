@@ -33,7 +33,7 @@ namespace Hotel.Data
                     Login = "1",
                     Password = "1",
                     Status = UserStatus.Active,
-                    LastDateLogin = new DateTime(2025,3,2),
+                    LastDateLogin = new DateTime(2025,3,5),
                     Role = UserRole.Client
                 });
                 UserList.Add(new User()

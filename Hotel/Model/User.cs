@@ -14,7 +14,7 @@ namespace Hotel.Model
         public string Login { get; set; }
         public string Password { get; set; }
         public UserStatus Status { get; set; }
-        public DateTime LastDateLogin { get; set; }
+        public DateTime? LastDateLogin { get; set; }
         public UserRole Role { get; set; }
 
     }

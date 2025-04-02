@@ -21,6 +21,8 @@ namespace Hotel.View
     /// </summary>
     public partial class LoginWindow : Window
     {
+        private string userLogin = "";
+        private int countLogin = 0;
         public LoginWindow()
         {
             InitializeComponent();
@@ -30,19 +32,59 @@ namespace Hotel.View
         {
             if (LoginTextBox.Text.Trim() != "" && PasswordPasswordBox.Password != "")
             {
-                var selectedUser = UsersData.GetUsers().FirstOrDefault(user =>
-                                    user.Login == LoginTextBox.Text && user.Password == PasswordPasswordBox.Password);
+                var selectedUser = UsersData.GetUsers().FirstOrDefault(user => user.Login == LoginTextBox.Text);
                 if (selectedUser != null)
                 {
-                    if (selectedUser.LastDateLogin >= DateTime.Now.AddMonths(-1))
+                    if (selectedUser.Password == PasswordPasswordBox.Password)
                     {
+                        if (selectedUser.Status != UserStatus.Blocked)
+                        {
+                            if ((selectedUser.LastDateLogin == null || selectedUser.LastDateLogin >= DateTime.Now.AddMonths(-1)) && countLogin < 3)
+                            {
+                                switch (selectedUser.Role)
+                                {
+                                    case UserRole.Admin:
+                                        break;
+                                    case UserRole.Client:
+                                        if (selectedUser.LastDateLogin == null)
+                                        {
+                                            ChangeNewUserPasswordWindow changeNewUserPasswordWindow = new ChangeNewUserPasswordWindow(selectedUser);
+                                            changeNewUserPasswordWindow.Show();
+                                            this.Close();
+                                        }
+                                        else
+                                        {
+                                            selectedUser.LastDateLogin = DateTime.Now;
+                                            ClientWindow clientWindow = new ClientWindow();
+                                            clientWindow.Show();
+                                            this.Close();
+                                        }
+                                        break;
 
+                                }
+                            }
+                            else
+                            {
+                                selectedUser.Status = UserStatus.Blocked;
+                                MessageBox.Show("Вы заблокированы. Обратитесь к администратору.", "Информация о блокировке", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                        }
+                        else
+                            MessageBox.Show("Вы заблокированы. Обратитесь к администратору.", "Информация о блокировке", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        if (userLogin != selectedUser.Login)
+                        {
+                            userLogin = selectedUser.Login;
+                            countLogin = 0;
+                        }
+                        countLogin++;
+                        MessageBox.Show($"Вы ввели неверный пароль. До блокировки {3 - countLogin} попыток", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
-                    MessageBox.Show("Вы ввели неверный логин или пароль", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
-
-
+                    MessageBox.Show("Вы ввели неверный логин", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
                 MessageBox.Show("Вы не ввели логин или пароль", "Ошибка ввода данных", MessageBoxButton.OK, MessageBoxImage.Error);

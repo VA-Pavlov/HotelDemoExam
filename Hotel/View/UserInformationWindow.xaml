@@ -25,17 +25,17 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,5">
             <TextBlock Text="Пароль:" FontSize="20" Margin="10,0"/>
-            <TextBox Text="{Binding FirstName}"/>
+            <TextBox Text="{Binding Password}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,5">
             <TextBlock Text="Статус:" FontSize="20" Margin="10,0"/>
-            <ComboBox ItemsSource="{Binding Status}"/>
+            <TextBox Text="{Binding Status}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,5">
             <TextBlock Text="Роль:" FontSize="20" Margin="10,0"/>
-            <ComboBox ItemsSource="{Binding Role}"/>
+            <TextBox  Text="{Binding Role}"/>
         </StackPanel>
-        <Button x:Name="SaveButton" FontSize="20" Margin="10,10"></Button>
+        <Button x:Name="SaveButton" FontSize="20" Margin="10,10" Click="SaveButtonClick"></Button>
         <Button FontSize="20" Margin="10,10"> Вернуться</Button>
     </StackPanel>
 </Window>

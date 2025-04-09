@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,38 @@ namespace Hotel.Data
 {
     static public class UsersData
     {
+        private static SqlConnection connection = new SqlConnection(
+            "Data Source=WIN-PKUO4L9RGT8;" +
+            "Initial Catalog=Hotel;" +
+            "Integrated Security=True");
+
+        public static bool AddUser(User user)
+        {
+            try
+            {
+                connection.Open();
+                int roleId = user.Role == UserRole.Admin ? 1 : 2;
+                int statusId = user.Status == UserStatus.Active ? 1 : 2;
+                var query = $"INSERT INTO Users Values ('{user.FirstName}'," +
+                                                        $"'{user.Surname}'," +
+                                                        $"'{user.Login}'," +
+                                                        $"'{user.Password}'," +
+                                                        $"{roleId}," +
+                                                        $"NULL," +
+                                                        $"{statusId});"; 
+                var command = new SqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+                return true;
+            }
+            catch
+            {
+                connection.Close();
+                return false;
+            }
+        }
+
+
         private static List<User> UserList = new List<User>();
         public static List<User> GetUsers()
         {

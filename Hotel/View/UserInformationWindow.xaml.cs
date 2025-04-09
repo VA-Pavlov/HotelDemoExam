@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Hotel.Data;
 using Hotel.Model;
 
 namespace Hotel.View
@@ -20,10 +21,13 @@ namespace Hotel.View
     /// </summary>
     public partial class UserInformationWindow : Window
     {
+        User User { get; set; }
         public UserInformationWindow()
         {
             InitializeComponent();
-            Title = "Создание пользователя";
+            User = new User();
+            this.DataContext = User;
+            Title = "Регистрация пользователя";
             SaveButton.Content = "Сохранить";
 
         }
@@ -31,10 +35,21 @@ namespace Hotel.View
         {
             InitializeComponent();
             this.DataContext = user;
+            this.User = user;
             Title = "Редактирование пользователя";
             SaveButton.Content = "Сохранить изменения";
 
         }
 
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (UsersData.AddUser(User))
+            {
+                MessageBox.Show("Пользователь успешно зарегистрирован", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else 
+                MessageBox.Show("Ошибка регистраци пользователя", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        }
     }
 }

@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Hotel.Data;
 using Hotel.Model;
 
@@ -30,64 +25,78 @@ namespace Hotel.View
 
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (LoginTextBox.Text.Trim() != "" && PasswordPasswordBox.Password != "")
+            if (string.IsNullOrWhiteSpace(LoginTextBox.Text) || string.IsNullOrWhiteSpace(PasswordPasswordBox.Password))
             {
-                var selectedUser = UsersData.GetUsers().FirstOrDefault(user => user.Login == LoginTextBox.Text);
-                if (selectedUser != null)
-                {
-                    if (selectedUser.Password == PasswordPasswordBox.Password)
-                    {
-                        if (selectedUser.Status != UserStatus.Blocked)
-                        {
-                            if ((selectedUser.LastDateLogin == null || selectedUser.LastDateLogin >= DateTime.Now.AddMonths(-1)) && countLogin < 3)
-                            {
-                                switch (selectedUser.Role)
-                                {
-                                    case UserRole.Admin:
-                                        break;
-                                    case UserRole.Client:
-                                        if (selectedUser.LastDateLogin == null)
-                                        {
-                                            ChangeNewUserPasswordWindow changeNewUserPasswordWindow = new ChangeNewUserPasswordWindow(selectedUser);
-                                            changeNewUserPasswordWindow.Show();
-                                            this.Close();
-                                        }
-                                        else
-                                        {
-                                            selectedUser.LastDateLogin = DateTime.Now;
-                                            ClientWindow clientWindow = new ClientWindow();
-                                            clientWindow.Show();
-                                            this.Close();
-                                        }
-                                        break;
+                MessageBox.Show("Вы не ввели логин или пароль", "Ошибка ввода данных", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-                                }
-                            }
-                            else
-                            {
-                                selectedUser.Status = UserStatus.Blocked;
-                                MessageBox.Show("Вы заблокированы. Обратитесь к администратору.", "Информация о блокировке", MessageBoxButton.OK, MessageBoxImage.Information);
-                            }
+            var selectedUser = UsersData.GetUsers().FirstOrDefault(user => user.Login == LoginTextBox.Text);
+
+            // Проверка существования пользователя
+            if (selectedUser == null)
+            {
+                MessageBox.Show("Вы ввели неверный логин", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Проверка пароля
+            if (selectedUser.Password != PasswordPasswordBox.Password)
+            {
+                if (userLogin != selectedUser.Login)
+                {
+                    userLogin = selectedUser.Login;
+                    countLogin = 0;
+                }
+                countLogin++;
+                MessageBox.Show($"Вы ввели неверный пароль.", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Проверка статуса пользователя
+            if (selectedUser.Status == UserStatus.Blocked)
+            {
+                MessageBox.Show("Вы заблокированы. Обратитесь к администратору.", "Информация о блокировке", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Проверка даты последнего входа
+            if ((selectedUser.LastDateLogin == null || selectedUser.LastDateLogin >= DateTime.Now.AddMonths(-1)) && countLogin < 3)
+            {
+                MessageBox.Show("Вы успешно вошли", "Вход", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Обработка ролей
+                switch (selectedUser.Role)
+                {
+                    case UserRole.Admin:
+                        AdminWindow adminWindow = new AdminWindow();
+                        adminWindow.Show();
+                        this.Close();
+                        break;
+
+                    case UserRole.Client:
+                        if (selectedUser.LastDateLogin == null)
+                        {
+                            ChangeNewUserPasswordWindow changeNewUserPasswordWindow = new ChangeNewUserPasswordWindow(selectedUser);
+                            changeNewUserPasswordWindow.Show();
+                            this.Close();
                         }
                         else
-                            MessageBox.Show("Вы заблокированы. Обратитесь к администратору.", "Информация о блокировке", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                    {
-                        if (userLogin != selectedUser.Login)
                         {
-                            userLogin = selectedUser.Login;
-                            countLogin = 0;
+                            selectedUser.LastDateLogin = DateTime.Now;
+                            ClientWindow clientWindow = new ClientWindow(selectedUser);
+                            clientWindow.Show();
+                            this.Close();
                         }
-                        countLogin++;
-                        MessageBox.Show($"Вы ввели неверный пароль. До блокировки {3 - countLogin} попыток", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                        break;
                 }
-                else
-                    MessageBox.Show("Вы ввели неверный логин", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
-                MessageBox.Show("Вы не ввели логин или пароль", "Ошибка ввода данных", MessageBoxButton.OK, MessageBoxImage.Error);
+            {
+                selectedUser.Status = UserStatus.Blocked;
+                countLogin = 0;
+                MessageBox.Show("Вы заблокированы. Обратитесь к администратору.", "Информация о блокировке", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }

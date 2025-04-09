@@ -38,7 +38,8 @@ namespace Hotel.View
                     {
                         if (OldPasswordTextBox.Text != NewPasswordTextBox.Text)
                         {
-                            ClientWindow clientWindow = new ClientWindow();
+                            ClientWindow clientWindow = new ClientWindow(user);
+                            MessageBox.Show("Пароль успешно изменен", "Изменение пароля", MessageBoxButton.OK, MessageBoxImage.Information);
                             clientWindow.Show();
                             this.Close();
                         }

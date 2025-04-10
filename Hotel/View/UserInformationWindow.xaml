@@ -15,26 +15,46 @@
             <TextBlock Text="Имя:" FontSize="20" Margin="10,0"/>
             <TextBox Grid.Column="1" Text="{Binding FirstName}" />
         </Grid>
-        <StackPanel Orientation="Horizontal" Margin="0,5">
+        <Grid  Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <TextBlock Text="Фамилия:" FontSize="20" Margin="10,0"/>
-            <TextBox Text="{Binding Surname}"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="0,5">
+            <TextBox Grid.Column="1" Text="{Binding Surname}"/>
+        </Grid>
+        <Grid  Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <TextBlock Text="Login:" FontSize="20" Margin="10,0"/>
-            <TextBox Text="{Binding Login}"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="0,5">
+            <TextBox Grid.Column="1" Text="{Binding Login}"/>
+        </Grid>
+        <Grid  Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <TextBlock Text="Пароль:" FontSize="20" Margin="10,0"/>
-            <TextBox Text="{Binding Password}"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="0,5">
+            <TextBox Grid.Column="1" Text="{Binding Password}"/>
+        </Grid>
+        <Grid  Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <TextBlock Text="Статус:" FontSize="20" Margin="10,0"/>
-            <TextBox Text="{Binding Status}"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="0,5">
+            <TextBox Grid.Column="1" Text="{Binding Status}"/>
+        </Grid>
+        <Grid  Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <TextBlock Text="Роль:" FontSize="20" Margin="10,0"/>
-            <TextBox  Text="{Binding Role}"/>
-        </StackPanel>
+            <TextBox Grid.Column="1" Text="{Binding Role}"/>
+        </Grid>
         <Button x:Name="SaveButton" FontSize="20" Margin="10,10" Click="SaveButtonClick"></Button>
         <Button FontSize="20" Margin="10,10"> Вернуться</Button>
     </StackPanel>

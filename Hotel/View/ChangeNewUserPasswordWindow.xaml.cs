@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Hotel.Data;
 using Hotel.Model;
 
 namespace Hotel.View
@@ -38,13 +39,16 @@ namespace Hotel.View
                     {
                         if (OldPasswordTextBox.Text != NewPasswordTextBox.Text)
                         {
-                            ClientWindow clientWindow = new ClientWindow(user);
-                            MessageBox.Show("Пароль успешно изменен", "Изменение пароля", MessageBoxButton.OK, MessageBoxImage.Information);
-                            clientWindow.Show();
-                            this.Close();
+                            if (UsersData.ChangeUserPassword(user, NewPasswordTextBox.Text))
+                            {
+                                ClientWindow clientWindow = new ClientWindow(user);
+                                MessageBox.Show("Пароль успешно изменен", "Изменение пароля", MessageBoxButton.OK, MessageBoxImage.Information);
+                                clientWindow.Show();
+                                this.Close();
+                            }
                         }
                         else
-                        MessageBox.Show("Текущий пароль совпадает с новым", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show("Текущий пароль совпадает с новым", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     else
                         MessageBox.Show("Текущий пароль введен неверно", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Error);

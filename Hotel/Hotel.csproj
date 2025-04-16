@@ -68,15 +68,15 @@
     <Compile Include="View\CreateNewUserWindow.xaml.cs">
       <DependentUpon>CreateNewUserWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EditUserWindow.xaml.cs">
+      <DependentUpon>EditUserWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="View\UserInformationWindow.xaml.cs">
-      <DependentUpon>UserInformationWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="View\AdminWindow.xaml">
       <SubType>Designer</SubType>
@@ -94,11 +94,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LoginWindow.xaml">
+    <Page Include="View\EditUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserInformationWindow.xaml">
+    <Page Include="View\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

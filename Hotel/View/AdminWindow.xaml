@@ -32,7 +32,7 @@
                         <TextBlock Text="Status" Margin="2,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding Status}" Margin="2,0"/>
                         <TextBlock Text="Дата последнего входа: " Margin="2,0" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding LastDateLogin}" Margin="2,0"/>
+                        <TextBlock Text="{Binding LastDateLogin, StringFormat={}{0:M/d/yyyy}}" Margin="2,0"/>
                         <TextBlock Text="Роль" Margin="2,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding Role}" Margin="2,0"/>
                     </StackPanel>

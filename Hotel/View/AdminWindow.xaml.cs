@@ -35,13 +35,14 @@ namespace Hotel.View
                 UsersData.GetUsers();
             }
         }
-
-
         private void EditUserButton(object sender, RoutedEventArgs e)
         {
             User user = UsersListBox.SelectedItem as User;
-            UserInformationWindow userInformationWindow = new UserInformationWindow(user);
-            userInformationWindow.ShowDialog();
+            EditUserWindow editUserWindow = new EditUserWindow(user);
+            if (editUserWindow.ShowDialog() == true)
+            {
+                UsersData.GetUsers();
+            }
         }
 
         private void UnblkedUserButton_Click(object sender, RoutedEventArgs e)

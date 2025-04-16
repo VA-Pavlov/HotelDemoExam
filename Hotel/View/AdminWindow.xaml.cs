@@ -29,8 +29,11 @@ namespace Hotel.View
 
         private void AddNewUserButton(object sender, RoutedEventArgs e)
         {
-            UserInformationWindow userInformationWindow = new UserInformationWindow();
-            userInformationWindow.ShowDialog();
+            CreateNewUserWindow createNewUserWindow = new CreateNewUserWindow();
+            if (createNewUserWindow.ShowDialog() == true)
+            {
+                UsersData.GetUsers();
+            }
         }
 
 
@@ -39,6 +42,12 @@ namespace Hotel.View
             User user = UsersListBox.SelectedItem as User;
             UserInformationWindow userInformationWindow = new UserInformationWindow(user);
             userInformationWindow.ShowDialog();
+        }
+
+        private void UnblkedUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            UsersData.UnblockedUser(UsersListBox.SelectedItem as User);
+            UsersData.GetUsers();
         }
     }
 }

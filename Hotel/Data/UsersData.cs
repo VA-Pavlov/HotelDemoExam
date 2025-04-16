@@ -66,7 +66,7 @@ namespace Hotel.Data
             {
                 connection.Open();
                 var query = $"UPDATE Users SET Password = '{newPassword}',LastDateLogin='{DateTime.Now}' WHERE Id = {user.Id};";
-                var command = new SqlCommand(query,connection);
+                var command = new SqlCommand(query, connection);
                 command.ExecuteNonQuery();
                 user.Password = newPassword;
                 connection.Close();
@@ -85,15 +85,14 @@ namespace Hotel.Data
             {
                 connection.Open();
                 int roleId = user.Role == UserRole.Admin ? 1 : 2;
-                int statusId = user.Status == UserStatus.Active ? 1 : 2;
-                //перечислить столбцы
-                var query = $"INSERT INTO Users Values ('{user.FirstName}'," +
+                var query = $"INSERT INTO Users (FirstName,Surname,Login,Password,Role_id,LastDateLogin,Status_id) " +
+                                                $"Values ('{user.FirstName}'," +
                                                         $"'{user.Surname}'," +
                                                         $"'{user.Login}'," +
                                                         $"'{user.Password}'," +
                                                         $"{roleId}," +
                                                         $"NULL," +
-                                                        $"{statusId});";
+                                                        $"1);";
                 var command = new SqlCommand(query, connection);
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -104,6 +103,30 @@ namespace Hotel.Data
                 connection.Close();
                 return false;
             }
+        }
+
+        public static bool UnblockedUser(User user)
+        {
+            if (user.Status == UserStatus.Blocked)
+                try
+                {
+                    connection.Open();
+                    var query = $"UPDATE Users SET Status_id = 1, LastDateLogin = '{DateTime.Now}' WHERE Id = {user.Id};";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.ExecuteNonQuery();
+                    MessageBox.Show($"Пользователь {user.FirstName} {user.Surname} разблокирован!", "Пользователь разблокирован", MessageBoxButton.OK, MessageBoxImage.Information);
+                    connection.Close();
+
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    connection.Close();
+                    return false;
+                }
+            MessageBox.Show($"Пользователь {user.FirstName} {user.Surname} не заблокирован", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            return false;
         }
 
 
